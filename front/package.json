@@ -1,0 +1,49 @@
+{
+  "name": "price-monitoring-system",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "latest",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "jiti": "latest",
+    "less": "latest",
+    "lightningcss": "latest",
+    "lucide-react": "^0.454.0",
+    "next": "16.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "latest",
+    "react-router-dom": "latest",
+    "recharts": "latest",
+    "sass": "latest",
+    "sass-embedded": "latest",
+    "shadcn": "3.5.0",
+    "stylus": "latest",
+    "sugarss": "latest",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7",
+    "terser": "latest",
+    "tsx": "latest",
+    "tw-animate-css": "latest",
+    "yaml": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.5",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5",
+    "vite": "^5.0.8"
+  }
+}

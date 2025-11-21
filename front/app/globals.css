@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Dark theme with cyan accents for PriceWatch (HSL values for Tailwind) */
+  --background: 222 14% 11%; /* #0f172a */
+  --foreground: 210 40% 98%; /* #f8fafc */
+  --card: 222 30% 17%; /* #1e293b */
+  --card-foreground: 210 40% 98%;
+  --popover: 222 30% 17%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 199 90% 49%; /* #0ea5e9 */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 222 26% 21%; /* #273449 */
+  --secondary-foreground: 210 40% 98%;
+  --muted: 222 16% 26%; /* #2f3c52 */
+  --muted-foreground: 215 20% 65%; /* #94a3b8 */
+  --accent: 199 90% 49%; /* shared accent */
+  --accent-foreground: 222 14% 11%;
+  --destructive: 0 82% 63%; /* #ef4444 */
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 72% 42%; /* #10b981 */
+  --warning: 38 92% 51%; /* #f59e0b */
+  --border: 222 20% 24%; /* #334155 */
+  --input: 222 20% 24%;
+  --ring: 199 90% 49%;
+  --surface: 222 30% 17%;
+  --surface-light: 222 20% 24%;
+  --foreground-muted: 215 20% 65%;
+  --chart-1: 199 90% 49%;
+  --chart-2: 142 72% 42%;
+  --chart-3: 0 82% 63%;
+  --chart-4: 38 92% 51%;
+  --chart-5: 262 45% 55%;
+  --radius: 0.5rem;
+  --sidebar: 222 30% 17%;
+  --sidebar-foreground: 210 40% 98%;
+  --sidebar-primary: 199 90% 49%;
+  --sidebar-primary-foreground: 222 14% 11%;
+  --sidebar-accent: 222 16% 26%;
+  --sidebar-accent-foreground: 210 40% 98%;
+  --sidebar-border: 222 20% 24%;
+  --sidebar-ring: 199 90% 49%;
+}
+
+.dark {
+  --background: 222 14% 11%;
+  --foreground: 210 40% 98%;
+  --card: 222 30% 17%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 30% 17%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 199 90% 49%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 222 26% 21%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 222 16% 26%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 199 90% 49%;
+  --accent-foreground: 222 14% 11%;
+  --destructive: 0 82% 63%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 142 72% 42%;
+  --warning: 38 92% 51%;
+  --border: 222 20% 24%;
+  --input: 222 20% 24%;
+  --ring: 199 90% 49%;
+  --surface: 222 30% 17%;
+  --surface-light: 222 20% 24%;
+  --foreground-muted: 215 20% 65%;
+  --chart-1: 199 90% 49%;
+  --chart-2: 142 72% 42%;
+  --chart-3: 0 82% 63%;
+  --chart-4: 38 92% 51%;
+  --chart-5: 262 45% 55%;
+  --sidebar: 222 30% 17%;
+  --sidebar-foreground: 210 40% 98%;
+  --sidebar-primary: 199 90% 49%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 222 16% 26%;
+  --sidebar-accent-foreground: 210 40% 98%;
+  --sidebar-border: 222 20% 24%;
+  --sidebar-ring: 199 90% 49%;
+}
+
+@theme inline {
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Add custom utility classes for PriceWatch */
+@layer components {
+  .card-base {
+    @apply bg-card rounded-lg border border-border p-6;
+  }
+
+  .input-base {
+    @apply w-full px-4 py-2 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all;
+  }
+
+  .btn-primary {
+    @apply px-6 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground font-medium transition-all duration-200;
+  }
+
+  .status-up {
+    @apply text-[#10b981];
+  }
+
+  .status-down {
+    @apply text-[#ef4444];
+  }
+
+  .container-app {
+    @apply min-h-screen flex flex-col;
+  }
+}
