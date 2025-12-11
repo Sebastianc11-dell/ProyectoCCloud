@@ -13,6 +13,10 @@ const env = {
     fromNumber: process.env.TWILIO_FROM_NUMBER || '+15206360599',
     messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID || 'MG6e8cf703149b55e63eb7e33431371cc2'
   },
+  amazon: {
+    key: process.env.RAPIDAPI_KEY || '24064e5804msh8c0f7defb7fd681p1a7369jsn368f1f10c261',
+    host: process.env.RAPIDAPI_HOST || 'amazon-product-info2.p.rapidapi.com'
+  },
   db: {
     host: process.env.DB_HOST || '34.176.159.252',
     port: Number(process.env.DB_PORT) || 3306,

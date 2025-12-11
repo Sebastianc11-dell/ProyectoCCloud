@@ -30,6 +30,10 @@ export default function Products() {
   const [targetPrice, setTargetPrice] = useState("")
   const [trackingError, setTrackingError] = useState(null)
   const [trackingLoading, setTrackingLoading] = useState(false)
+  const [importUrl, setImportUrl] = useState("")
+  const [importStatus, setImportStatus] = useState(null)
+  const [importLoading, setImportLoading] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   const formValues = watch()
 
@@ -57,7 +61,7 @@ export default function Products() {
       controller.abort()
       clearTimeout(timeout)
     }
-  }, [formValues.search])
+  }, [formValues.search, refreshKey])
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -136,6 +140,24 @@ export default function Products() {
     }
   }
 
+  const handleImportProduct = async (e) => {
+    e.preventDefault()
+    if (!importUrl.trim()) return
+    try {
+      setImportLoading(true)
+      setImportStatus(null)
+      await api.post("/api/products/import", { url: importUrl.trim() })
+      setImportStatus("Producto importado correctamente.")
+      setImportUrl("")
+      setRefreshKey((key) => key + 1)
+    } catch (err) {
+      const message = err.response?.data?.message || "No pudimos importar el producto"
+      setImportStatus(message)
+    } finally {
+      setImportLoading(false)
+    }
+  }
+
   return (
     <div className="container-app">
       <Navbar />
@@ -144,8 +166,8 @@ export default function Products() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-2">Find Products</h1>
-            <p className="text-foreground-muted">Search and discover products to monitor</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Buscar productos</h1>
+            <p className="text-foreground-muted">Descubre productos para monitorear sus precios</p>
           </div>
 
           {/* Search Bar */}
@@ -155,10 +177,31 @@ export default function Products() {
               <input
                 type="text"
                 {...register("search")}
-                placeholder="Search products..."
+                placeholder="Buscar productos..."
                 className="input-base pl-12 py-3 text-base"
               />
             </div>
+          </div>
+
+          {/* Import Product */}
+          <div className="mb-8 card-base">
+            <form onSubmit={handleImportProduct} className="space-y-3">
+              <label className="block text-sm font-medium text-foreground">Importar producto desde Amazon</label>
+              <div className="flex flex-col gap-3 md:flex-row">
+                <input
+                  type="url"
+                  value={importUrl}
+                  onChange={(e) => setImportUrl(e.target.value)}
+                  className="input-base flex-1"
+                  placeholder="https://www.amazon.com/dp/..."
+                  required
+                />
+                <button type="submit" className="btn-primary" disabled={importLoading}>
+                  {importLoading ? "Importando..." : "Importar"}
+                </button>
+              </div>
+              {importStatus && <p className="text-sm text-foreground-muted">{importStatus}</p>}
+            </form>
           </div>
 
           {/* Filters and Products */}
@@ -177,7 +220,7 @@ export default function Products() {
                   className="flex items-center gap-2 btn-secondary w-full justify-center"
                 >
                   <Filter size={20} />
-                  {showFilters ? "Hide Filters" : "Show Filters"}
+                  {showFilters ? "Ocultar filtros" : "Mostrar filtros"}
                 </button>
               </div>
 
@@ -190,17 +233,19 @@ export default function Products() {
 
               {/* Sort Bar */}
               <div className="flex justify-between items-center mb-6">
-                <p className="text-foreground-muted">Showing {filteredProducts.length} products</p>
+                <p className="text-foreground-muted">
+                  Mostrando {filteredProducts.length} producto{filteredProducts.length === 1 ? "" : "s"}
+                </p>
                 <select {...register("sortBy")} className="input-base py-2 text-sm max-w-xs">
-                  <option value="relevance">Relevance</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                  <option value="rating">Top Rated</option>
+                  <option value="relevance">Relevancia</option>
+                  <option value="price-asc">Precio: menor a mayor</option>
+                  <option value="price-desc">Precio: mayor a menor</option>
+                  <option value="rating">Mejor valorados</option>
                 </select>
               </div>
 
               {error && <p className="text-danger mb-4">{error}</p>}
-              {loading && <p className="text-foreground-muted mb-4">Loading products...</p>}
+              {loading && <p className="text-foreground-muted mb-4">Cargando productos...</p>}
 
               {/* Products Grid */}
               {filteredProducts.length > 0 ? (
@@ -211,9 +256,9 @@ export default function Products() {
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-foreground-muted mb-4">No products found</p>
+                  <p className="text-foreground-muted mb-4">No encontramos productos</p>
                   <button onClick={() => reset()} className="btn-primary">
-                    Clear Filters
+                    Limpiar filtros
                   </button>
                 </div>
               )}
@@ -228,9 +273,13 @@ export default function Products() {
           <div className="space-y-4">
             <div className="flex gap-4">
               <img
-                src={selectedProduct.image || "/placeholder.svg"}
+                src={selectedProduct.image || selectedProduct.thumbnail || "/placeholder.svg"}
                 alt={selectedProduct.title}
                 className="w-24 h-24 rounded-lg object-cover"
+                onError={(e) => {
+                  e.currentTarget.onerror = null
+                  e.currentTarget.src = "/placeholder.svg"
+                }}
               />
               <div>
                 <h3 className="font-semibold text-foreground mb-2">{selectedProduct.title}</h3>
@@ -259,10 +308,10 @@ export default function Products() {
             </div>
             <div className="flex gap-3">
               <button onClick={() => setIsModalOpen(false)} className="btn-secondary flex-1">
-                Cancel
+                Cancelar
               </button>
               <button onClick={handleConfirmTracking} className="btn-primary flex-1" disabled={trackingLoading}>
-                {trackingLoading ? "Guardando..." : "Agregar a Tracking"}
+                {trackingLoading ? "Guardando..." : "Agregar a seguimiento"}
               </button>
             </div>
           </div>
@@ -279,18 +328,18 @@ function FilterPanel({ register, formValues }) {
   const [expandedCategory, setExpandedCategory] = useState(null)
 
   const categories = [
-    { value: "all", label: "All Categories" },
-    { value: "electronics", label: "Electronics" },
-    { value: "cameras", label: "Cameras" },
-    { value: "accessories", label: "Accessories" },
-    { value: "storage", label: "Storage" },
+    { value: "all", label: "Todas las categorías" },
+    { value: "electronics", label: "Electrónica" },
+    { value: "cameras", label: "Cámaras" },
+    { value: "accessories", label: "Accesorios" },
+    { value: "storage", label: "Almacenamiento" },
   ]
 
   const conditions = [
-    { value: "all", label: "Any Condition" },
-    { value: "new", label: "New" },
-    { value: "refurbished", label: "Refurbished" },
-    { value: "used", label: "Used" },
+    { value: "all", label: "Cualquier estado" },
+    { value: "new", label: "Nuevo" },
+    { value: "refurbished", label: "Reacondicionado" },
+    { value: "used", label: "Usado" },
   ]
 
   return (
@@ -298,7 +347,7 @@ function FilterPanel({ register, formValues }) {
       <div>
         <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
           <Filter size={18} />
-          Filters
+          Filtros
         </h3>
       </div>
 
@@ -308,7 +357,7 @@ function FilterPanel({ register, formValues }) {
           onClick={() => setExpandedCategory(expandedCategory === "category" ? null : "category")}
           className="w-full text-left font-semibold text-foreground mb-3 flex items-center justify-between"
         >
-          Category
+          Categoría
           <span className={`transform transition ${expandedCategory === "category" ? "rotate-180" : ""}`}>v</span>
         </button>
         {expandedCategory === "category" && (
@@ -329,17 +378,17 @@ function FilterPanel({ register, formValues }) {
           onClick={() => setExpandedCategory(expandedCategory === "price" ? null : "price")}
           className="w-full text-left font-semibold text-foreground mb-3 flex items-center justify-between"
         >
-          Price Range
+          Rango de precio
           <span className={`transform transition ${expandedCategory === "price" ? "rotate-180" : ""}`}>v</span>
         </button>
         {expandedCategory === "price" && (
           <div className="space-y-3">
             <div>
-              <label className="text-sm text-foreground-muted mb-1 block">Min Price</label>
+              <label className="text-sm text-foreground-muted mb-1 block">Precio mínimo</label>
               <input type="number" {...register("priceMin")} placeholder="$0" className="input-base text-sm" />
             </div>
             <div>
-              <label className="text-sm text-foreground-muted mb-1 block">Max Price</label>
+              <label className="text-sm text-foreground-muted mb-1 block">Precio máximo</label>
               <input type="number" {...register("priceMax")} placeholder="$5000" className="input-base text-sm" />
             </div>
           </div>
@@ -352,7 +401,7 @@ function FilterPanel({ register, formValues }) {
           onClick={() => setExpandedCategory(expandedCategory === "condition" ? null : "condition")}
           className="w-full text-left font-semibold text-foreground mb-3 flex items-center justify-between"
         >
-          Condition
+          Estado
           <span className={`transform transition ${expandedCategory === "condition" ? "rotate-180" : ""}`}>v</span>
         </button>
         {expandedCategory === "condition" && (

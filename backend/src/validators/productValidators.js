@@ -10,7 +10,12 @@ const searchSchema = Joi.object({
   query: Joi.string().min(2)
 });
 
+const importProductSchema = Joi.object({
+  url: Joi.string().uri().required()
+});
+
 module.exports = {
   trackProductSchema,
-  searchSchema
+  searchSchema,
+  importProductSchema
 };

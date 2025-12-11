@@ -27,16 +27,16 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
             <Link to="/dashboard" className="text-foreground-muted hover:text-foreground transition">
-              Dashboard
+              Panel
             </Link>
             <Link to="/products" className="text-foreground-muted hover:text-foreground transition">
-              Search
+              Productos
             </Link>
             <Link to="/tracking" className="text-foreground-muted hover:text-foreground transition">
-              Tracking
+              Seguimiento
             </Link>
             <Link to="/alerts" className="text-foreground-muted hover:text-foreground transition">
-              Alerts
+              Alertas
             </Link>
           </div>
 
@@ -47,11 +47,11 @@ export default function Navbar() {
               <span className="text-foreground-muted text-sm">{user?.email}</span>
             </div>
             <Link to="/profile" className="hidden sm:block btn-secondary py-1">
-              Profile
+              Perfil
             </Link>
             <button onClick={handleLogout} className="flex items-center gap-2 btn-primary py-1">
               <LogOut size={18} />
-              Logout
+              Salir
             </button>
 
             {/* Mobile Menu Button */}
@@ -69,28 +69,28 @@ export default function Navbar() {
               className="block py-2 text-foreground-muted hover:text-foreground"
               onClick={() => setIsOpen(false)}
             >
-              Dashboard
+              Panel
             </Link>
             <Link
               to="/products"
               className="block py-2 text-foreground-muted hover:text-foreground"
               onClick={() => setIsOpen(false)}
             >
-              Search Products
+              Buscar productos
             </Link>
             <Link
               to="/tracking"
               className="block py-2 text-foreground-muted hover:text-foreground"
               onClick={() => setIsOpen(false)}
             >
-              My Tracking
+              Mi seguimiento
             </Link>
             <Link
               to="/alerts"
               className="block py-2 text-foreground-muted hover:text-foreground"
               onClick={() => setIsOpen(false)}
             >
-              Alerts
+              Alertas
             </Link>
           </div>
         )}

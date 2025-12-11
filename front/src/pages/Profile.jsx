@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
@@ -12,9 +12,9 @@ export default function Profile() {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
-    fullName: user?.email?.split("@")[0] || "",
+    fullName: user?.name || "",
     email: user?.email || "",
-    phone: user?.phone || "+1 (555) 123-4567",
+    phone: user?.phone || "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -52,17 +52,17 @@ export default function Profile() {
 
   const handleSaveProfile = () => {
     // TODO: Call API to save profile
-    setSavedMessage("Profile updated successfully")
+    setSavedMessage("Perfil actualizado correctamente")
     setTimeout(() => setSavedMessage(""), 3000)
   }
 
   const handleChangePassword = () => {
     if (formData.newPassword !== formData.confirmPassword) {
-      alert("Passwords do not match")
+      alert("Las contrasenas no coinciden")
       return
     }
     // TODO: Call API to change password
-    setSavedMessage("Password changed successfully")
+    setSavedMessage("Contrasena actualizada correctamente")
     setFormData({
       ...formData,
       currentPassword: "",
@@ -77,6 +77,15 @@ export default function Profile() {
     navigate("/login")
   }
 
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      fullName: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+    }))
+  }, [user])
+
   return (
     <div className="container-app">
       <Navbar />
@@ -85,8 +94,8 @@ export default function Profile() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-2">Account Settings</h1>
-            <p className="text-foreground-muted">Manage your profile and preferences</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Configuracion de cuenta</h1>
+            <p className="text-foreground-muted">Administra tu perfil y preferencias</p>
           </div>
 
           {/* Success Message */}
@@ -107,7 +116,7 @@ export default function Profile() {
               }`}
             >
               <User className="inline mr-2" size={18} />
-              Profile
+              Perfil
             </button>
             <button
               onClick={() => setActiveTab("security")}
@@ -118,7 +127,7 @@ export default function Profile() {
               }`}
             >
               <Lock className="inline mr-2" size={18} />
-              Security
+              Seguridad
             </button>
             <button
               onClick={() => setActiveTab("notifications")}
@@ -129,7 +138,7 @@ export default function Profile() {
               }`}
             >
               <Bell className="inline mr-2" size={18} />
-              Notifications
+              Notificaciones
             </button>
           </div>
 
@@ -143,9 +152,9 @@ export default function Profile() {
                     <User size={48} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">Profile Picture</h3>
-                    <p className="text-foreground-muted text-sm mb-4">Upload a new profile picture</p>
-                    <button className="btn-secondary">Upload Picture</button>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Foto de perfil</h3>
+                    <p className="text-foreground-muted text-sm mb-4">Sube una nueva imagen</p>
+                    <button className="btn-secondary">Subir foto</button>
                   </div>
                 </div>
               </div>
@@ -154,13 +163,13 @@ export default function Profile() {
               <div className="card-base">
                 <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
                   <User size={20} className="text-primary" />
-                  Personal Information
+                  Informacion personal
                 </h3>
 
                 <div className="space-y-4">
                   {/* Full Name */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Nombre completo</label>
                     <input
                       type="text"
                       name="fullName"
@@ -172,7 +181,7 @@ export default function Profile() {
 
                   {/* Email */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Email Address</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Correo electronico</label>
                     <div className="relative">
                       <Mail size={20} className="absolute left-3 top-3 text-foreground-muted" />
                       <input
@@ -183,12 +192,12 @@ export default function Profile() {
                         className="input-base pl-10 opacity-60 cursor-not-allowed"
                       />
                     </div>
-                    <p className="text-xs text-foreground-muted mt-1">Email cannot be changed</p>
+                    <p className="text-xs text-foreground-muted mt-1">El correo no puede modificarse</p>
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Phone Number</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Numero telefonico</label>
                     <div className="relative">
                       <Phone size={20} className="absolute left-3 top-3 text-foreground-muted" />
                       <input
@@ -207,7 +216,7 @@ export default function Profile() {
                     className="btn-primary w-full flex items-center justify-center gap-2 mt-6"
                   >
                     <Save size={20} />
-                    Save Changes
+                    Guardar cambios
                   </button>
                 </div>
               </div>
@@ -221,13 +230,13 @@ export default function Profile() {
               <div className="card-base">
                 <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
                   <Lock size={20} className="text-primary" />
-                  Change Password
+                  Cambiar contrasena
                 </h3>
 
                 <div className="space-y-4">
                   {/* Current Password */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Current Password</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Contrasena actual</label>
                     <div className="relative">
                       <input
                         type={showPassword.current ? "text" : "password"}
@@ -253,7 +262,7 @@ export default function Profile() {
 
                   {/* New Password */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">New Password</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Nueva contrasena</label>
                     <div className="relative">
                       <input
                         type={showPassword.new ? "text" : "password"}
@@ -279,7 +288,7 @@ export default function Profile() {
 
                   {/* Confirm Password */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Confirm Password</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">Confirmar contrasena</label>
                     <div className="relative">
                       <input
                         type={showPassword.confirm ? "text" : "password"}
@@ -309,24 +318,24 @@ export default function Profile() {
                     className="btn-primary w-full flex items-center justify-center gap-2 mt-6"
                   >
                     <Lock size={20} />
-                    Change Password
+                    Actualizar contrasena
                   </button>
                 </div>
               </div>
 
               {/* Account Danger Zone */}
               <div className="card-base border border-danger border-opacity-30 bg-danger bg-opacity-5">
-                <h3 className="text-lg font-bold text-danger mb-4">Danger Zone</h3>
+                <h3 className="text-lg font-bold text-danger mb-4">Zona de riesgo</h3>
                 <p className="text-foreground-muted text-sm mb-4">
-                  Logout from all devices or permanently delete your account.
+                  Cierra sesion en todos los dispositivos o elimina tu cuenta permanentemente.
                 </p>
                 <div className="flex gap-3">
                   <button onClick={handleLogout} className="flex-1 btn-primary flex items-center justify-center gap-2">
                     <LogOut size={20} />
-                    Logout
+                    Cerrar sesion
                   </button>
                   <button className="flex-1 px-6 py-2 rounded-lg border border-danger text-danger hover:bg-danger hover:bg-opacity-10 font-medium transition">
-                    Delete Account
+                    Eliminar cuenta
                   </button>
                 </div>
               </div>
@@ -339,15 +348,15 @@ export default function Profile() {
               <div className="card-base">
                 <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
                   <Bell size={20} className="text-primary" />
-                  Notification Preferences
+                  Preferencias de notificacion
                 </h3>
 
                 <div className="space-y-4">
                   {/* Email Notifications */}
                   <div className="flex items-center justify-between p-4 rounded-lg bg-surface-light">
                     <div>
-                      <p className="font-medium text-foreground mb-1">Email Notifications</p>
-                      <p className="text-sm text-foreground-muted">Receive email updates about your tracked products</p>
+                      <p className="font-medium text-foreground mb-1">Notificaciones por correo</p>
+                      <p className="text-sm text-foreground-muted">Recibe actualizaciones de tus productos monitoreados</p>
                     </div>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -362,8 +371,8 @@ export default function Profile() {
                   {/* Price Drop Alerts */}
                   <div className="flex items-center justify-between p-4 rounded-lg bg-surface-light">
                     <div>
-                      <p className="font-medium text-foreground mb-1">Price Drop Alerts</p>
-                      <p className="text-sm text-foreground-muted">Get notified when prices drop on tracked products</p>
+                      <p className="font-medium text-foreground mb-1">Alertas de precio</p>
+                      <p className="text-sm text-foreground-muted">Seras avisado cuando baje el precio del producto</p>
                     </div>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -378,10 +387,8 @@ export default function Profile() {
                   {/* Weekly Report */}
                   <div className="flex items-center justify-between p-4 rounded-lg bg-surface-light">
                     <div>
-                      <p className="font-medium text-foreground mb-1">Weekly Report</p>
-                      <p className="text-sm text-foreground-muted">
-                        Receive a weekly summary of your price monitoring data
-                      </p>
+                      <p className="font-medium text-foreground mb-1">Reporte semanal</p>
+                      <p className="text-sm text-foreground-muted">Recibe un resumen semanal del monitoreo</p>
                     </div>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -396,10 +403,8 @@ export default function Profile() {
                   {/* Marketing Emails */}
                   <div className="flex items-center justify-between p-4 rounded-lg bg-surface-light">
                     <div>
-                      <p className="font-medium text-foreground mb-1">Marketing Emails</p>
-                      <p className="text-sm text-foreground-muted">
-                        Receive promotional offers and feature announcements
-                      </p>
+                      <p className="font-medium text-foreground mb-1">Correos promocionales</p>
+                      <p className="text-sm text-foreground-muted">Enterate de novedades y anuncios especiales</p>
                     </div>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -414,13 +419,13 @@ export default function Profile() {
                   {/* Save Preferences Button */}
                   <button
                     onClick={() => {
-                      setSavedMessage("Notification preferences updated")
+                      setSavedMessage("Preferencias de notificacion guardadas")
                       setTimeout(() => setSavedMessage(""), 3000)
                     }}
                     className="btn-primary w-full flex items-center justify-center gap-2 mt-6"
                   >
                     <Save size={20} />
-                    Save Preferences
+                    Guardar preferencias
                   </button>
                 </div>
               </div>

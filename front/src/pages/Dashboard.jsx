@@ -63,8 +63,8 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-foreground mb-2">Dashboard</h1>
-            <p className="text-foreground-muted">Monitor your tracked products and manage alerts</p>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Panel principal</h1>
+            <p className="text-foreground-muted">Monitorea tus productos vigilados y gestiona las alertas</p>
           </div>
 
           {/* Stats Grid */}
@@ -73,7 +73,7 @@ export default function Dashboard() {
             <div className="card-base">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-foreground-muted text-sm mb-1">Tracked Products</p>
+                  <p className="text-foreground-muted text-sm mb-1">Productos vigilados</p>
                   <p className="text-3xl font-bold text-foreground">{stats.tracked}</p>
                 </div>
                 <Package size={40} className="text-primary opacity-20" />
@@ -84,7 +84,7 @@ export default function Dashboard() {
             <div className="card-base">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-foreground-muted text-sm mb-1">Active Alerts</p>
+                  <p className="text-foreground-muted text-sm mb-1">Alertas activas</p>
                   <p className="text-3xl font-bold text-danger">{stats.activeAlerts}</p>
                 </div>
                 <AlertCircle size={40} className="text-danger opacity-20" />
@@ -95,7 +95,7 @@ export default function Dashboard() {
             <div className="card-base">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-foreground-muted text-sm mb-1">Price Updates</p>
+                  <p className="text-foreground-muted text-sm mb-1">Actualizaciones de precio</p>
                   <p className="text-3xl font-bold text-foreground">{stats.updates}</p>
                 </div>
                 <TrendingUp size={40} className="text-primary opacity-20" />
@@ -106,7 +106,7 @@ export default function Dashboard() {
             <div className="card-base">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-foreground-muted text-sm mb-1">Highest Variation</p>
+                  <p className="text-foreground-muted text-sm mb-1">Mayor variacion</p>
                   <p className="text-3xl font-bold text-success">{stats.highestVariation}%</p>
                 </div>
                 <TrendingDown size={40} className="text-success opacity-20" />
@@ -118,7 +118,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Recent Price Updates */}
             <div className="card-base">
-              <h2 className="text-xl font-bold text-foreground mb-6">Latest Updates</h2>
+              <h2 className="text-xl font-bold text-foreground mb-6">Actualizaciones recientes</h2>
               <div className="space-y-4">
                 {recentTracking.map((item) => (
                   <div
@@ -143,7 +143,7 @@ export default function Dashboard() {
 
             {/* Active Alerts */}
             <div className="card-base">
-              <h2 className="text-xl font-bold text-foreground mb-6">Recent Alerts</h2>
+              <h2 className="text-xl font-bold text-foreground mb-6">Alertas recientes</h2>
               <div className="space-y-4">
                 {alerts.map((alert) => (
                   <div key={alert.id} className="p-4 rounded-lg bg-surface-light border border-surface-light">

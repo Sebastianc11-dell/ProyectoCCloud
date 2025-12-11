@@ -44,7 +44,17 @@ exports.trackProduct = async (userId, { externalId, productId, targetPrice }) =>
      WHERE tp.user_id = ? AND tp.product_id = ?`,
     [userId, product.id]
   );
-  return rows[0];
+  const tracked = rows[0];
+
+  const [existingAlerts] = await query('SELECT id FROM alerts WHERE tracked_product_id = ?', [tracked.id]);
+  if (existingAlerts.length === 0) {
+    await query(
+      'INSERT INTO alerts (tracked_product_id, channel, threshold, is_active) VALUES (?, ?, ?, 1)',
+      [tracked.id, 'sms', targetPrice]
+    );
+  }
+
+  return tracked;
 };
 
 exports.untrackProduct = async (userId, trackedId) => {
