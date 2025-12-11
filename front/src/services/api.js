@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const instance = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "https://pricewatch-api-1075919751225.southamerica-east1.run.app",
   headers: {
     "Content-Type": "application/json",
   },
