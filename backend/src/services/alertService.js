@@ -34,8 +34,9 @@ exports.listAlerts = async (userId) => {
      FROM alerts a
      JOIN tracked_products tp ON tp.id = a.tracked_product_id
      JOIN products p ON p.id = tp.product_id
-     WHERE tp.user_id = ?`,
-    [userId]
+     WHERE tp.user_id = ?
+       AND a.is_active = 1`,
+    [userId],
   );
   return rows;
 };

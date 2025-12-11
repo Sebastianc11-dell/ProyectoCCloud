@@ -25,9 +25,11 @@ export default function Dashboard() {
         const tracking = trackingRes.data || []
         const alertsData = alertsRes.data || []
 
+        const activeTracked = tracking.filter((t) => t.is_active === 1 || t.is_active === true).length
+
         setStats({
           tracked: tracking.length,
-          activeAlerts: alertsData.length,
+          activeAlerts: activeTracked,
           updates: 0,
           highestVariation: 0,
         })

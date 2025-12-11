@@ -22,8 +22,9 @@ exports.searchProducts = async (req, res, next) => {
     const [rows] = await query(
       `SELECT p.*
        FROM products p
-       WHERE (? IS NULL OR LOWER(p.title) LIKE CONCAT('%', ?, '%'))`,
-      [term || null, term || null]
+       WHERE p.created_by = ?
+         AND (? IS NULL OR LOWER(p.title) LIKE CONCAT('%', ?, '%'))`,
+      [req.user.id, term || null, term || null],
     );
     res.json(rows.map(mapProduct));
   } catch (error) {
@@ -34,7 +35,7 @@ exports.searchProducts = async (req, res, next) => {
 exports.getProductDetail = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const [rows] = await query(`SELECT p.* FROM products p WHERE p.id = ?`, [id]);
+    const [rows] = await query(`SELECT p.* FROM products p WHERE p.id = ? AND p.created_by = ?`, [id, req.user.id]);
     if (rows.length === 0) {
       throw new AppError('Product not found', 404);
     }

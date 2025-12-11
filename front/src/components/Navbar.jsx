@@ -35,9 +35,7 @@ export default function Navbar() {
             <Link to="/tracking" className="text-foreground-muted hover:text-foreground transition">
               Seguimiento
             </Link>
-            <Link to="/alerts" className="text-foreground-muted hover:text-foreground transition">
-              Alertas
-            </Link>
+        
           </div>
 
           {/* User Menu */}
